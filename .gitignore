@@ -1,0 +1,18 @@
+# Binaries
+bin/
+dist/
+
+# Go
+*.exe
+*.out
+*.test
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+
+# Docker
+*.log
