@@ -52,6 +52,9 @@ Raft Log Replication
 | Follower | | Follower |
 +-------------+ +-------------+
 
+yaml
+Copy code
+
 ### Write Path
 
 - Writes are accepted only by the leader
@@ -145,6 +148,9 @@ raft-kv/
 ├── docker-compose.yml
 └── README.md
 
+yaml
+Copy code
+
 ---
 
 ## Running Locally
@@ -156,6 +162,7 @@ raft-kv/
 ### Start a local cluster
 ```bash
 docker-compose up
+
 Project Status
 
 Status: Active development
