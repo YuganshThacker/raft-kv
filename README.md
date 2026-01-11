@@ -1,14 +1,14 @@
 # raft-kv
 
-A fault-tolerant, strongly consistent key-value store built in Go using the Raft consensus algorithm.
+A fault-tolerant, strongly consistent key-value store built in Go using the Raft consensus algorithm. 
 
 ---
 
 ## Overview
 
-`raft-kv` is a distributed key-value store designed to explore how modern systems maintain consistency and availability in the presence of failures.
+`raft-kv` is a distributed key-value store designed to explore how modern systems maintain consistency and availability in the presence of failures. 
 
-The project focuses on:
+The project focuses on: 
 
 - Leader-based replication  
 - Consensus via Raft  
@@ -38,22 +38,23 @@ It is inspired by systems such as **etcd** and **Consul**, with an emphasis on c
 
 ## Architecture
 
-Client
-|
-gRPC
-|
-+-------------+
-| Leader Node |
-+-------------+
-|
-Raft Log Replication
-|
-+-------------+ +-------------+
-| Follower | | Follower |
-+-------------+ +-------------+
-
-yaml
-Copy code
+```
+                    Client
+                      |
+                    gRPC
+                      |
+               +-------------+
+               | Leader Node |
+               +-------------+
+                      |
+          Raft Log Replication
+                      |
+        +-------------+-------------+
+        |                           |
+  +-------------+             +-------------+
+  | Follower    |             | Follower    |
+  +-------------+             +-------------+
+```
 
 ### Write Path
 
@@ -84,7 +85,7 @@ The system exposes a simple gRPC interface:
 | `Get(key)` | Retrieve a value |
 | `Delete(key)` | Remove a key |
 
-All write operations are routed through the current leader.
+All write operations are routed through the current leader. 
 
 ---
 
@@ -121,7 +122,7 @@ Metrics are exported in **Prometheus** format.
 
 ## Failure Handling
 
-The system is designed to recover from common failure modes:
+The system is designed to recover from common failure modes: 
 
 - **Leader crash:** A new leader is elected automatically  
 - **Follower crash:** The node catches up via log replication  
@@ -132,24 +133,23 @@ The system is designed to recover from common failure modes:
 
 ## Repository Layout
 
+```
 raft-kv/
 ├── cmd/
-│ ├── node/ # KV node entry point
-│ └── client/ # CLI client
+│   ├── node/           # KV node entry point
+│   └── client/         # CLI client
 ├── internal/
-│ ├── raft/ # Consensus logic
-│ ├── store/ # State machine
-│ ├── wal/ # Write-ahead log
-│ ├── snapshot/ # Snapshot management
-│ ├── api/ # gRPC handlers
-│ └── metrics/ # Prometheus metrics
+│   ├── raft/           # Consensus logic
+│   ├── store/          # State machine
+│   ├── wal/            # Write-ahead log
+│   ├── snapshot/       # Snapshot management
+│   ├── api/            # gRPC handlers
+│   └── metrics/        # Prometheus metrics
 ├── proto/
 ├── tests/
 ├── docker-compose.yml
 └── README.md
-
-yaml
-Copy code
+```
 
 ---
 
@@ -162,62 +162,60 @@ Copy code
 ### Start a local cluster
 ```bash
 docker-compose up
+```
 
-Project Status
+---
 
-Status: Active development
+## Project Status
 
-Implemented
+**Status:** Active development
 
-Leader election
+### Implemented
 
-Log replication
+- Leader election
+- Log replication
+- Majority-based commits
+- Basic KV operations
+- Crash recovery
+- Metrics export
 
-Majority-based commits
+### Planned
 
-Basic KV operations
+- Snapshot installation on lagging nodes
+- Read optimizations
+- Fault-injection testing
+- Stress and soak testing
 
-Crash recovery
+---
 
-Metrics export
+## Trade-offs
 
-Planned
+- Prioritizes correctness over throughput
+- Uses leader-based reads to simplify consistency
+- Accepts higher latency under failures for stronger guarantees
 
-Snapshot installation on lagging nodes
+These decisions are intentional and documented. 
 
-Read optimizations
+---
 
-Fault-injection testing
+## Motivation & Learning
 
-Stress and soak testing
+This project was built to gain hands-on experience with: 
 
-Trade-offs
+- Distributed consensus
+- Failure recovery
+- Consistency models
+- Designing observable backend systems
 
-Prioritizes correctness over throughput
+---
 
-Uses leader-based reads to simplify consistency
-
-Accepts higher latency under failures for stronger guarantees
-
-These decisions are intentional and documented.
-
-Motivation & Learning
-
-This project was built to gain hands-on experience with:
-
-Distributed consensus
-
-Failure recovery
-
-Consistency models
-
-Designing observable backend systems
-
-Contributing
+## Contributing
 
 Issues, discussions, and pull requests are welcome.
 The project aims to remain readable, well-documented, and educational.
 
-License
+---
+
+## License
 
 MIT
